@@ -27,7 +27,7 @@ type WeatherForecast struct {
 }
 
 var client *mongo.Client
-var apiKey = "7421c0f9a28989397ea8614d660a732a"
+var apiKey = "sua_key_api"
 
 func main() {
 	r := mux.NewRouter()
