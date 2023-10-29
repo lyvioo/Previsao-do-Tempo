@@ -102,10 +102,8 @@ func addWeatherDataToDatabase() {
 		Forecasts: forecasts,
 	}
 
-	// Acessar a coleção de previsão do tempo no MongoDB
 	collection := client.Database("previsao-do-tempo").Collection("previsoes")
 
-	// Atualiza o documento ou insere se não existir
 	opts := options.Replace().SetUpsert(true)
 	_, err := collection.ReplaceOne(context.TODO(), bson.M{}, weatherData, opts)
 	if err != nil {
@@ -117,7 +115,6 @@ func addWeatherDataToDatabase() {
 
 
 func GetWeatherForecast(w http.ResponseWriter, r *http.Request) {
-	// Acessar a coleção de previsão do tempo no MongoDB
 	collection := client.Database("previsao-do-tempo").Collection("previsoes")
 
 	var result WeatherData
