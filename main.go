@@ -105,14 +105,16 @@ func addWeatherDataToDatabase() {
 	// Acessar a coleção de previsão do tempo no MongoDB
 	collection := client.Database("previsao-do-tempo").Collection("previsoes")
 
-	// Inserir o documento na coleção
-	_, err := collection.InsertOne(context.TODO(), weatherData)
+	// Atualiza o documento ou insere se não existir
+	opts := options.Replace().SetUpsert(true)
+	_, err := collection.ReplaceOne(context.TODO(), bson.M{}, weatherData, opts)
 	if err != nil {
-		log.Printf("Erro ao inserir dados de previsão do tempo: %v\n", err)
+		log.Printf("Erro ao atualizar/inserir dados de previsão do tempo: %v\n", err)
 	} else {
-		log.Println("Dados de previsão do tempo inseridos com sucesso")
+		log.Println("Dados de previsão do tempo atualizados/inseridos com sucesso")
 	}
 }
+
 
 func GetWeatherForecast(w http.ResponseWriter, r *http.Request) {
 	// Acessar a coleção de previsão do tempo no MongoDB
