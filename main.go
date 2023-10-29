@@ -53,6 +53,7 @@ func main() {
 	http.ListenAndServe(":8080", r)
 }
 
+
 func fetchWeatherData(city string) (WeatherForecast, error) {
 	url := fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=metric", city, apiKey)
 
