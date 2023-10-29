@@ -85,20 +85,16 @@ func fetchWeatherData(city string) (WeatherForecast, error) {
 }
 
 func addWeatherDataToDatabase() {
+	cities := []string{"Sao Paulo", "Rio de Janeiro", "Brasília", "Florianópolis", "Campo Grande", "Fortaleza"}
 	forecasts := []WeatherForecast{}
 
-	saoPauloData, err := fetchWeatherData("Sao Paulo")
-	if err != nil {
-		log.Printf("Erro ao buscar dados de previsão do tempo para São Paulo: %v\n", err)
-	} else {
-		forecasts = append(forecasts, saoPauloData)
-	}
-
-	rioDeJaneiroData, err := fetchWeatherData("Rio de Janeiro")
-	if err != nil {
-		log.Printf("Erro ao buscar dados de previsão do tempo para o Rio de Janeiro: %v\n", err)
-	} else {
-		forecasts = append(forecasts, rioDeJaneiroData)
+	for _, city := range cities {
+		data, err := fetchWeatherData(city)
+		if err != nil {
+			log.Printf("Erro ao buscar dados de previsão do tempo para %s: %v\n", city, err)
+		} else {
+			forecasts = append(forecasts, data)
+		}
 	}
 
 	weatherData := WeatherData{
@@ -110,7 +106,7 @@ func addWeatherDataToDatabase() {
 	collection := client.Database("previsao-do-tempo").Collection("previsoes")
 
 	// Inserir o documento na coleção
-	_, err = collection.InsertOne(context.TODO(), weatherData)
+	_, err := collection.InsertOne(context.TODO(), weatherData)
 	if err != nil {
 		log.Printf("Erro ao inserir dados de previsão do tempo: %v\n", err)
 	} else {
